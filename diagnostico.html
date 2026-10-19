@@ -13,10 +13,10 @@ const out=document.getElementById('out'),OK='✅',KO='❌',WA='⚠️';
 async function get(u,o){const r=await fetch(u+(u.includes('?')?'&':'?')+'t='+Date.now(),o||{cache:'no-store'});let b=null,t='';try{t=await r.text();b=JSON.parse(t)}catch(e){}return{r,b,t}}
 async function run(){const L=[],add=(s,t,d)=>{L.push('<div class="row"><b>'+s+' '+t+'</b><div>'+(d||'')+'</div></div>');out.innerHTML=L.join('')};out.innerHTML='A testar…';
 try{const{r,b}=await get('/api/ai');
- if(r.ok&&b&&b.ok)add(b.chave?OK:KO,'Função /api/ai',b.chave?'Chave do Claude encontrada. Origens permitidas: '+(b.origensPermitidas.length?b.origensPermitidas.join(', '):'(nenhuma definida)')+'. Origem desta página: '+location.origin:'Falta a variável ANTHROPIC_API_KEY na Vercel (Settings > Environment Variables) e um Redeploy.');
+ if(r.ok&&b&&b.ok)add(b.chave?OK:KO,'Função /api/ai',b.chave?'Chave da Groq encontrada. Origens permitidas: '+(b.origensPermitidas.length?b.origensPermitidas.join(', '):'(nenhuma definida)')+'. Origem desta página: '+location.origin:'Falta a variável GROQ_API_KEY na Vercel (Settings > Environment Variables) e um Redeploy.');
  else add(KO,'Função /api/ai','Não respondeu como esperado (estado '+r.status+'). Confirma que a pasta api/ foi publicada no GitHub e na Vercel.')}catch(e){add(KO,'Função /api/ai','Sem resposta: '+e.message)}
 try{const{b}=await get('/api/ai?teste=1');
- if(b&&b.teste)add(OK,'Ligação ao Claude','Funciona (modelo '+b.modeloUsado+').');else add(KO,'Ligação ao Claude',(b&&b.detalhe)||'Falhou sem detalhe.')}catch(e){add(KO,'Ligação ao Claude','Sem resposta: '+e.message)}
+ if(b&&b.teste)add(OK,'Ligação à Groq','Funciona (modelo '+b.modeloUsado+').');else add(KO,'Ligação à Groq',(b&&b.detalhe)||'Falhou sem detalhe.')}catch(e){add(KO,'Ligação à Groq','Sem resposta: '+e.message)}
 try{const{r,b}=await get('/api/campanhas');
  if(r.ok&&b&&b.lr)add(OK,'Catálogo partilhado (/api/campanhas)','Ativo, atualizado em '+(b.atualizado||'?')+'.');
  else if(r.status===404)add(WA,'Catálogo partilhado (/api/campanhas)','Ainda não há catálogo publicado (normal no início). O simulador usa o campanhas.json até publicares campanhas pelo modo administrador (?admin=1).');

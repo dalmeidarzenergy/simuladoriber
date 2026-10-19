@@ -299,15 +299,15 @@ d.setFontSize(9);d.setTextColor(20,35,26);d.text(eur(cbf(r)),106,y,{align:'right
 d.setFont('helvetica','bold');dd>0?d.setTextColor(0,140,56):d.setTextColor(192,57,43);{const mm=L.cur-cbf(r);d.text((mm>=0?'':'+')+eur(Math.abs(mm)),129,y,{align:'right'})}d.text((dd>0?'':'+')+eur(Math.abs(dd)),194,y,{align:'right'});y+=10.5});
 d.addPage();hdr();y=44;d.setFont('helvetica','bold');d.setFontSize(14);d.setTextColor(20,35,26);d.text('Detalhe da poupança – campanha '+(ONE?'escolhida':'recomendada'),14,y);y+=9;
 const bst=L.rs.find((r,i)=>(r.c.r||String(i))===DETREF)||L.rs[0],f4=x=>x.toFixed(4).replace('.',','),k2=x=>(Math.round(x*10)/10).toString().replace('.',',')+' kWh',nv=id=>+$(id).value||0;
-const X=[16,84,106,128,152,174,194],sgn=v=>(v<0?'-':'')+eur(Math.abs(v)),cell=(t,x)=>d.text(String(t),x,y,{align:'right'});
+const X=[16,80,104,128,150,172,194],sgn=v=>(v<0?'-':'')+eur(Math.abs(v)),cell=(t,x)=>d.text(String(t),x,y,{align:'right'});
 const line=(a,q,pn,pa,vn,va,bold,tint)=>{if(y>275){d.addPage();hdr();y=44}
 if(tint){d.setFillColor(230,245,236);d.rect(14,y-4.2,182,6,'F')}
 d.setFont('helvetica',bold?'bold':'normal');d.setFontSize(8);d.setTextColor(20,35,26);d.text(a,X[0],y);
-if(q!=null)cell(q,X[1]);if(pn!=null)cell(pn,X[2]);if(pa!=null)cell(pa,X[3]);if(vn!=null)cell(sgn(vn),X[4]);if(va!=null)cell(sgn(va),X[5]);
+if(q!=null)cell(q,X[1]);if(pa!=null)cell(pa,X[2]);if(pn!=null)cell(pn,X[3]);if(va!=null)cell(sgn(va),X[4]);if(vn!=null)cell(sgn(vn),X[5]);
 if(vn!=null&&va!=null){const s=va-vn;d.setFont('helvetica','bold');if(s>=0)d.setTextColor(0,140,56);else d.setTextColor(192,57,43);cell((s>=0?'':'+')+eur(Math.abs(s)),X[6])}
 y+=6};
-const head=t=>{if(y>268){d.addPage();hdr();y=44}d.setFillColor(0,164,67);d.rect(14,y-4.5,182,6.5,'F');d.setTextColor(255,255,255);d.setFont('helvetica','bold');d.setFontSize(7.5);d.text(t,X[0],y);
-[['Qtd.',1],['Preço Iberdrola',2],['Preço atual',3],['Custo Iberdrola',4],['Custo atual',5],['Poupança',6]].forEach(h=>cell(h[0],X[h[1]]));y+=7};
+const head=t=>{if(y>262){d.addPage();hdr();y=44}d.setFillColor(0,164,67);d.rect(14,y-4.5,182,13,'F');d.setTextColor(255,255,255);d.setFont('helvetica','bold');d.setFontSize(7.5);d.text(d.splitTextToSize(t,56)[0],X[0],y+2.5);d.setFontSize(6.5);
+[[['Qtd.'],1],[['Preço','Comercializador','Atual'],2],[['Preço','Iberdrola'],3],[['Custo','Comercializador','Atual'],4],[['Custo','Iberdrola'],5],[['Poupança'],6]].forEach(h=>{const n=h[0].length,y0=n==1?y+2.5:n==2?y+0.8:y-0.9;h[0].forEach((ln,k)=>d.text(ln,X[h[1]],y0+k*3.1,{align:'right'}))});y+=14};
 const block=(title,r,oo,tot,cutot,cur)=>{head(title);const gg=oo.seg[0]=='g',S={n:0,c:0,ok:true};
 const it=(lab,q,qs,pn,pa)=>{const vn=q*pn,va=pa>0?q*pa:null;S.n+=vn;if(va==null)S.ok=false;else S.c+=va;line(lab,qs,f4(pn),pa>0?f4(pa):'-',vn,va)};
 it(gg?'Termo fixo (€/dia)':'Potência (€/dia)',oo.days,oo.days+' dias',r.fxe,cur.pot);
